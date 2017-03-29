@@ -1,0 +1,24 @@
+{
+  "name": "amscroll",
+  "version": "0.0.1",
+  "description": "A polyfill/util for position: sticky",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/parttimesuperhero/amscroll.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/parttimesuperhero/amscroll/issues"
+  },
+  "homepage": "https://github.com/parttimesuperhero/amscroll#readme",
+  "devDependencies": {
+    "babel-preset-es2015": "^6.24.0",
+    "gulp": "^3.9.1",
+    "gulp-babel": "^6.1.2"
+  }
+}
