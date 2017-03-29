@@ -67,6 +67,7 @@ function amScroll (opt) {
         el.style.position = "relative";
         el.style.top = "0";
         this.fixedEls.splice(this.fixedEls.indexOf(e), 1);
+        document.body.style.paddingTop = this.elements[e - 1] ? this.elements[e - 1].getAttribute('data-pad-top') : 0;
       }
     }
     this.scrolling = false;
