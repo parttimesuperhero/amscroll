@@ -4,11 +4,17 @@
   <meta charset="UTF-8">
   <title>Am Scroll Demo</title>
   <style>
+    html,
+    body {
+      min-height: 100%;
+    }
+
     * {
       padding: 0;
       margin: 0;
       box-sizing: border-box;
     }
+    h1,
     h2 {
       background: #fff;
       border: 1px solid;
@@ -21,10 +27,16 @@
     [data-fixed] {
       background: #ddd
     }
+
+    footer {
+      width: 100%;
+      background: black;
+      text-align: center;
+    }
   </style>
 </head>
 <body>
-  <h1>amScroll Demo, I should stick</h1>
+  <h1 data-amScroll="true">amScroll Demo, I should stick</h1>
   <p class="amScroll-content">
     Lorem ipsum dolor sit amet, consectetur adipisicing elit. Non tempora, dolor itaque! Aliquam et, ad a dolore, necessitatibus similique, quod accusantium alias aut cumque eveniet odio sequi voluptas sint eaque!
   </p>
@@ -36,6 +48,8 @@
   <p class="amScroll-content">
     Lorem ipsum dolor sit amet, consectetur adipisicing elit. Non tempora, dolor itaque! Aliquam et, ad a dolore, necessitatibus similique, quod accusantium alias aut cumque eveniet odio sequi voluptas sint eaque!
   </p>
+
+  <footer>Footer</footer>
 
   <script src="./app.min.js"></script>
 </body>

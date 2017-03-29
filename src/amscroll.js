@@ -6,6 +6,7 @@ function amScroll (opt) {
 
   // private data
   this.scrolling = false
+  this.fixedEls = [];
 
 
   // private functions
@@ -39,7 +40,6 @@ function amScroll (opt) {
         fixPos += tmpEl.offsetHeight + borderTop + borderBottom;
         i--;
       }
-
       el.setAttribute('data-fix-at', el.offsetTop);
       el.setAttribute('data-fix-pos', fixPos);
       el.setAttribute('data-pad-top', fixPos + el.offsetHeight);
@@ -58,15 +58,15 @@ function amScroll (opt) {
         fixAt = parseInt(el.getAttribute('data-fix-at'), 10),
         fixPos = parseInt(el.getAttribute('data-fix-pos'), 10),
         padTop = parseInt(el.getAttribute('data-pad-top'), 10);
-
-      if (window.scrollY >= fixAt - fixPos) {
-        document.documentElement.style.paddingTop = `${padTop}px`;
+      if (window.scrollY > fixAt - fixPos && this.fixedEls.indexOf(e) < 0) {
+        this.fixedEls.push(e);
+        document.body.style.paddingTop = `${padTop}px`;
         el.style.top = `${fixPos}px`;
         el.style.position = "fixed";
-      } else if (window.scrollY < fixAt) {
-        document.documentElement.style.paddingTop = this.elements[e - 1] ? this.elements[e - 1].getAttribute('data-pad-top') : 0;
+      } else if (window.scrollY < fixAt - fixPos && this.fixedEls.indexOf(e) > -1) {
         el.style.position = "relative";
         el.style.top = "0";
+        this.fixedEls.splice(this.fixedEls.indexOf(e), 1);
       }
     }
     this.scrolling = false;
