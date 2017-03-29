@@ -2,7 +2,7 @@
   "name": "amscroll",
   "version": "0.0.1",
   "description": "A polyfill/util for position: sticky",
-  "main": "index.js",
+  "main": "dist/amscroll.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
