@@ -63,7 +63,7 @@ function amScroll (opt) {
         document.body.style.paddingTop = `${padTop}px`;
         el.style.top = `${fixPos}px`;
         el.style.position = "fixed";
-      } else if (window.scrollY < fixAt - fixPos && this.fixedEls.indexOf(e) > -1) {
+      } else if (window.scrollY < fixAt - fixPos) {
         el.style.position = "relative";
         el.style.top = "0";
         this.fixedEls.splice(this.fixedEls.indexOf(e), 1);
