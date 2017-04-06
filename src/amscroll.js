@@ -65,7 +65,7 @@ function amScroll (opt) {
         el.classList.toggle(this.opts.stuckClass, true)
         el.style.top = `${fixPos}px`;
         el.style.position = "fixed";
-      } else if (window.scrollY < fixAt - fixPos) {
+      } else if (window.scrollY < fixAt - fixPos || window.scrollY <= 0) {
         el.classList.remove(this.opts.stuckClass)
         el.style.position = "relative";
         el.style.top = "0";
