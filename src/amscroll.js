@@ -2,6 +2,7 @@ function amScroll (opt) {
   // optional params
   this.opts = opt || {}
   this.opts.selector = this.opts.selector || '[data-amScroll]'
+  this.opts.stuckClass = this.opts.stuckClass || 'stuck'
   this.opts.name = this.opts.name || 'amScroll' + new Date().getTime()
 
   // private data
@@ -61,9 +62,11 @@ function amScroll (opt) {
       if (window.scrollY > fixAt - fixPos && this.fixedEls.indexOf(e) < 0) {
         this.fixedEls.push(e);
         document.body.style.paddingTop = `${padTop}px`;
+        el.classList.toggle(this.opts.stuckClass, true)
         el.style.top = `${fixPos}px`;
         el.style.position = "fixed";
       } else if (window.scrollY < fixAt - fixPos) {
+        el.classList.remove(this.opts.stuckClass)
         el.style.position = "relative";
         el.style.top = "0";
         this.fixedEls.splice(this.fixedEls.indexOf(e), 1);
