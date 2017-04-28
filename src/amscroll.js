@@ -25,7 +25,7 @@ function amScroll (opt) {
       let i = e;
       let fixPos = 0;
       let tmpEl;
-      let fixAt = this.opts.includeHeight ? el.offsetTop + el.offsetHeight : el.offsetTop;
+      let fixAt = el.offsetTop;
 
       while (tmpEl = this.elements[i - 1]) {
         let elStyles  = getComputedStyle(tmpEl);
@@ -61,7 +61,10 @@ function amScroll (opt) {
       let el = this.elements[e],
         fixAt = parseInt(el.getAttribute('data-fix-at'), 10),
         fixPos = parseInt(el.getAttribute('data-fix-pos'), 10),
-        padTop = parseInt(el.getAttribute('data-pad-top'), 10);
+        padTop = parseInt(el.getAttribute('data-pad-top'), 10),
+        offSet = this.opts.includeHeight ? el.offsetHeight : 0
+
+      fixAt += this.opts.includeHeight ? el.offsetHeight : 0;
 
       if (window.scrollY > fixAt - fixPos && this.fixedEls.indexOf(e) < 0) {
         this.fixedEls.push(e);
@@ -69,7 +72,7 @@ function amScroll (opt) {
         el.classList.toggle(this.opts.stuckClass, true);
         el.style.top = `${fixPos}px`;
         el.style.position = "fixed";
-      } else if (window.scrollY < fixAt - fixPos || window.scrollY <= 0) {
+      } else if (window.scrollY < fixAt - fixPos - offSet || window.scrollY <= 0) {
         el.classList.remove(this.opts.stuckClass)
         el.style.position = "relative";
         el.style.top = "0";
