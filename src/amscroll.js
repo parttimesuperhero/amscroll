@@ -4,6 +4,7 @@ function amScroll (opt) {
   this.opts.selector = this.opts.selector || '[data-amScroll]'
   this.opts.stuckClass = this.opts.stuckClass || 'stuck'
   this.opts.name = this.opts.name || 'amScroll' + new Date().getTime()
+  this.opts.includeHeight = this.opts.includeHeight || false
 
   // private data
   this.scrolling = false
@@ -24,6 +25,7 @@ function amScroll (opt) {
       let i = e;
       let fixPos = 0;
       let tmpEl;
+      let fixAt = this.opts.includeHeight ? el.offsetTop + el.offsetHeight : el.offsetTop;
 
       while (tmpEl = this.elements[i - 1]) {
         let elStyles  = getComputedStyle(tmpEl);
@@ -41,7 +43,8 @@ function amScroll (opt) {
         fixPos += tmpEl.offsetHeight + borderTop + borderBottom;
         i--;
       }
-      el.setAttribute('data-fix-at', el.offsetTop);
+
+      el.setAttribute('data-fix-at', fixAt);
       el.setAttribute('data-fix-pos', fixPos);
       el.setAttribute('data-pad-top', fixPos + el.offsetHeight);
     }
@@ -59,10 +62,11 @@ function amScroll (opt) {
         fixAt = parseInt(el.getAttribute('data-fix-at'), 10),
         fixPos = parseInt(el.getAttribute('data-fix-pos'), 10),
         padTop = parseInt(el.getAttribute('data-pad-top'), 10);
+
       if (window.scrollY > fixAt - fixPos && this.fixedEls.indexOf(e) < 0) {
         this.fixedEls.push(e);
         document.body.style.paddingTop = `${padTop}px`;
-        el.classList.toggle(this.opts.stuckClass, true)
+        el.classList.toggle(this.opts.stuckClass, true);
         el.style.top = `${fixPos}px`;
         el.style.position = "fixed";
       } else if (window.scrollY < fixAt - fixPos || window.scrollY <= 0) {

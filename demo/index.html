@@ -4,6 +4,25 @@
   <meta charset="UTF-8">
   <title>Am Scroll Demo</title>
   <style>
+  @keyframes showStuck {
+    0% {
+      opacity: 0;
+      transform: translate3d(0, -100%, 0);
+    }
+    70% {
+      opacity: 0;
+      transform: translate3d(0, -100%, 0);
+    }
+    85% {
+      opacity: 0;
+    }
+    100% {
+      opacity: 1;
+      transform: translate3d(0, 0, 0);
+    }
+  }
+
+
     html,
     body {
       min-height: 100%;
@@ -21,6 +40,7 @@
     }
 
     .stuck {
+      animation: showStuck 1000ms 1 alternate forwards;
       background: #ccc;
     }
 
