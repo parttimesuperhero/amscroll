@@ -5,6 +5,7 @@ function amScroll (opt) {
   this.opts.stuckClass = this.opts.stuckClass || 'stuck'
   this.opts.name = this.opts.name || 'amScroll' + new Date().getTime()
   this.opts.includeHeight = this.opts.includeHeight || false
+  this.opts.fixPosition = this.opts.fixPosition || false
 
   // private data
   this.scrolling = false
@@ -68,16 +69,20 @@ function amScroll (opt) {
 
       if (window.scrollY > fixAt - fixPos && this.fixedEls.indexOf(e) < 0) {
         this.fixedEls.push(e);
-        document.body.style.paddingTop = `${padTop}px`;
         el.classList.toggle(this.opts.stuckClass, true);
-        el.style.top = `${fixPos}px`;
-        el.style.position = "fixed";
+        if (this.opts.fixPosition) {
+          document.body.style.paddingTop = `${padTop}px`;
+          el.style.top = `${fixPos}px`;
+          el.style.position = "fixed";
+        }
       } else if (window.scrollY < fixAt - fixPos - offSet || window.scrollY <= 0) {
-        el.classList.remove(this.opts.stuckClass)
-        el.style.position = "relative";
-        el.style.top = "0";
         this.fixedEls.splice(this.fixedEls.indexOf(e), 1);
-        document.body.style.paddingTop = this.elements[e - 1] ? this.elements[e - 1].getAttribute('data-pad-top') : 0;
+        el.classList.remove(this.opts.stuckClass);
+        if (this.opts.fixPosition) {
+          el.style.position = "relative";
+          el.style.top = "0";
+          document.body.style.paddingTop = this.elements[e - 1] ? this.elements[e - 1].getAttribute('data-pad-top') : 0;
+        }
       }
     }
     this.scrolling = false;

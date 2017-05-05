@@ -1,6 +1,6 @@
 const amScroll = require('../dist/amscroll');
 
-let scroller = new amScroll({
-  includeHeight: true
+var scroller = new amScroll({
 });
 window.addEventListener('scroll', scroller.scroller, false);
+
