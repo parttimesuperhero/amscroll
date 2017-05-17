@@ -2,6 +2,7 @@ function amScroll (opt) {
   // optional params
   this.opts = opt || {}
   this.opts.selector = this.opts.selector || '[data-amScroll]'
+  this.opts.faderSelector = this.opts.faderSelector || '[data-fadeonscroll]'
   this.opts.stuckClass = this.opts.stuckClass || 'stuck'
   this.opts.name = this.opts.name || 'amScroll' + new Date().getTime()
   this.opts.includeHeight = this.opts.includeHeight || false
@@ -54,10 +55,14 @@ function amScroll (opt) {
   const init = () => {
     this.elements = document.querySelectorAll(this.opts.selector);
     this.elLength = this.elements.length;
+    this.fadeElements = document.querySelectorAll(this.opts.faderSelector);
+    this.fadeElLength = this.fadeElements.length;
     setOffsets();
   }
 
   this.update = () => {
+    let scrollY = window.scrollY;
+
     for (var e = 0; e < this.elLength; e++) {
       let el = this.elements[e],
         fixAt = parseInt(el.getAttribute('data-fix-at'), 10),
@@ -67,7 +72,7 @@ function amScroll (opt) {
 
       fixAt += this.opts.includeHeight ? el.offsetHeight : 0;
 
-      if (window.scrollY > fixAt - fixPos && this.fixedEls.indexOf(e) < 0) {
+      if (scrollY > fixAt - fixPos && this.fixedEls.indexOf(e) < 0) {
         this.fixedEls.push(e);
         el.classList.toggle(this.opts.stuckClass, true);
         if (this.opts.fixPosition) {
@@ -75,7 +80,7 @@ function amScroll (opt) {
           el.style.top = `${fixPos}px`;
           el.style.position = "fixed";
         }
-      } else if (window.scrollY < fixAt - fixPos - offSet || window.scrollY <= 0) {
+      } else if (scrollY < fixAt - fixPos - offSet || scrollY <= 0) {
         this.fixedEls.splice(this.fixedEls.indexOf(e), 1);
         el.classList.remove(this.opts.stuckClass);
         if (this.opts.fixPosition) {
@@ -83,6 +88,18 @@ function amScroll (opt) {
           el.style.top = "0";
           document.body.style.paddingTop = this.elements[e - 1] ? this.elements[e - 1].getAttribute('data-pad-top') : 0;
         }
+      }
+    }
+
+    // Scroll Faders
+    for (var e = 0; e < this.fadeElLength; e++) {
+      let el = this.fadeElements[e];
+      let offTop = el.offsetTop;
+      let elHeight = el.offsetHeight;
+      let opacity = (((offTop - scrollY) + elHeight ) / elHeight).toFixed(3);
+
+      if (offTop - scrollY < 0 && opacity >= 0) {
+        el.setAttribute('style', `opacity:${opacity}`);
       }
     }
     this.scrolling = false;
