@@ -53,6 +53,10 @@ function amScroll (opt) {
   }
 
   const init = () => {
+    addElements()
+  }
+
+  const addElements = () => {
     this.elements = document.querySelectorAll(this.opts.selector);
     this.elLength = this.elements.length;
     this.fadeElements = document.querySelectorAll(this.opts.faderSelector);
@@ -109,7 +113,8 @@ function amScroll (opt) {
 
   // API/data for end-user
   return {
-    scroller: requestScroll
+    scroller: requestScroll,
+    addElements: addElements
   }
 }
 
