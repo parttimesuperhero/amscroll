@@ -50,7 +50,7 @@ function amScroll (opt) {
 
       if (el.getBoundingClientRect().top < this.fixAt && this.fixedEls.indexOf(e) < 0) {
         this.fixedEls.push(e);
-        el.classList.add(this.opts.stuckClass);
+        el.setAttribute('data-stuck', true);
         if (this.opts.fixPosition) {
           el.style.top = `${this.fixAt}px`;
           el.style.position = "fixed";
@@ -59,7 +59,7 @@ function amScroll (opt) {
       } else if (parseInt(el.getAttribute('data-fix-at'), 10) - scrollY > this.fixAt && this.fixedEls.indexOf(e) > -1) {
         this.fixedEls.splice(this.fixedEls.indexOf(e), 1);
         this.fixAt -= el.clientHeight;
-        el.classList.remove(this.opts.stuckClass);
+        el.setAttribute('data-stuck', false);
 
         if (this.opts.fixPosition) {
           el.style.position = "relative";
