@@ -24,35 +24,13 @@ function amScroll (opt) {
   const setOffsets = () => {
     for (var e = 0; e < this.elLength; e++) {
       let el = this.elements[e];
-      let i = e;
-      let fixPos = 0;
-      let tmpEl;
-      let fixAt = el.offsetTop;
-
-      while (tmpEl = this.elements[i - 1]) {
-        let elStyles  = getComputedStyle(tmpEl);
-        let borderTop  = 0;
-        let borderBottom  = 0;
-        let addBorder = elStyles.getPropertyValue('box-sizing') !== 'border-box';
-
-        if( addBorder ) {
-          borderTop = elStyles.getPropertyValue('border-top-width')
-                        .replace("px", "")
-          borderBottom = elStyles.getPropertyValue('border-bottom-width')
-                          .replace("px", "")
-        }
-
-        fixPos += tmpEl.offsetHeight + borderTop + borderBottom;
-        i--;
-      }
-
+      let fixAt = el.getBoundingClientRect().top > 0 ? el.getBoundingClientRect().top : el.getBoundingClientRect().top + scrollY;
       el.setAttribute('data-fix-at', fixAt);
-      el.setAttribute('data-fix-pos', fixPos);
-      el.setAttribute('data-pad-top', fixPos + el.offsetHeight);
     }
   }
 
   const init = () => {
+    this.fixAt = 0;
     addElements()
   }
 
@@ -68,31 +46,27 @@ function amScroll (opt) {
     let scrollY = window.scrollY;
 
     for (var e = 0; e < this.elLength; e++) {
-      let el = this.elements[e],
-        fixAt = parseInt(el.getAttribute('data-fix-at'), 10),
-        fixPos = parseInt(el.getAttribute('data-fix-pos'), 10),
-        padTop = parseInt(el.getAttribute('data-pad-top'), 10),
-        offSet = this.opts.includeHeight ? el.offsetHeight : 0
+      let el = this.elements[e];
 
-      fixAt += this.opts.includeHeight ? el.offsetHeight : 0;
-
-      if (scrollY > fixAt - fixPos && this.fixedEls.indexOf(e) < 0) {
+      if (el.getBoundingClientRect().top < this.fixAt && this.fixedEls.indexOf(e) < 0) {
         this.fixedEls.push(e);
-        el.classList.toggle(this.opts.stuckClass, true);
+        el.classList.add(this.opts.stuckClass);
         if (this.opts.fixPosition) {
-          document.body.style.paddingTop = `${padTop}px`;
-          el.style.top = `${fixPos}px`;
+          el.style.top = `${this.fixAt}px`;
           el.style.position = "fixed";
+          this.fixAt += el.clientHeight;
         }
-      } else if (scrollY < fixAt - fixPos - offSet || scrollY <= 0) {
+      } else if (parseInt(el.getAttribute('data-fix-at'), 10) - scrollY > this.fixAt && this.fixedEls.indexOf(e) > -1) {
         this.fixedEls.splice(this.fixedEls.indexOf(e), 1);
+        this.fixAt -= el.clientHeight;
         el.classList.remove(this.opts.stuckClass);
+
         if (this.opts.fixPosition) {
           el.style.position = "relative";
           el.style.top = "0";
-          document.body.style.paddingTop = this.elements[e - 1] ? this.elements[e - 1].getAttribute('data-pad-top') : 0;
         }
       }
+      document.body.style.paddingTop = `${this.fixAt}px`;
     }
 
     // Scroll Faders
