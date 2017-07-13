@@ -43,7 +43,7 @@ function amScroll (opt) {
   }
 
   this.update = () => {
-    let scrollY = window.scrollY;
+    let scrollY = window.scrollY || window.pageYOffset;
 
     for (var e = 0; e < this.elLength; e++) {
       let el = this.elements[e];
