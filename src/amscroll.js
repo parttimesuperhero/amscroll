@@ -24,7 +24,7 @@ function amScroll (opt) {
   const setOffsets = () => {
     for (var e = 0; e < this.elLength; e++) {
       let el = this.elements[e];
-      let fixAt = el.getBoundingClientRect().top > 0 ? el.getBoundingClientRect().top : el.getBoundingClientRect().top + (window.scrollY || window.pageYOffset);
+      let fixAt = el.getBoundingClientRect().top > 0 ? el.getBoundingClientRect().top : el.getBoundingClientRect().top;
       el.setAttribute('data-fix-at', fixAt);
     }
   }
